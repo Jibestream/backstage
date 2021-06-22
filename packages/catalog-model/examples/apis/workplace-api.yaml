@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: wokplaceanalytics
+  description: IIP API
+  
+  links:
+    - url: https://www2.locality.io/lib/doc/api.php
+      title: API Spec
+      icon: code
+
+spec: 
+  type: openapi
+  lifecycle: production
+  owner: inpixon
+  
+  definition: 
+    $text: https://www2.locality.io/lib/doc/api.php
