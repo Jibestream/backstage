@@ -1,8 +1,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: wokplaceanalytics
-  description: IIP API
+  name: odp
+ 
 
 spec: 
   type: openapi
@@ -10,4 +10,4 @@ spec:
   owner: inpixon
   
   definition: 
-    $text: https://login.inpixon.com/lib/doc/api.php
+    $text: https://api.inpixondev.com/odp/query/openapi.json

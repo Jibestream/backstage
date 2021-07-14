@@ -5,11 +5,9 @@ metadata:
   description: A collection of all Backstage example APIs
 spec:
   targets:
+    - ./apis/jacs-api.yaml
     - ./apis/workplace-api.yaml
-    - ./apis/hello-world-api.yaml
-    - ./apis/petstore-api.yaml
-    - ./apis/spotify-api.yaml
-    - ./apis/streetlights-api.yaml
-    - ./apis/swapi-graphql.yaml
-    - ./apis/wayback-archive-api.yaml
-    - ./apis/wayback-search-api.yaml
+    - ./apis/asset-tracking-api.yaml
+    - ./apis/analytics-api.yaml
+    - ./apis/odp-api.yaml
+   
