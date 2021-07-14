@@ -286,9 +286,9 @@ auth:
   #      clientSecret: ${AUTH_GOOGLE_CLIENT_SECRET}
     github:
       development:
-        clientId: c44086066fc2ea77b350
-        clientSecret: 5e1b77088cb2d821e72a5b5ca914f2a60a379ed0
-        #enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}
     #gitlab:
      # development:
       #  clientId: ${AUTH_GITLAB_CLIENT_ID}
@@ -299,9 +299,9 @@ auth:
   #    issuer: 'passport-saml'
     okta:
       development:
-        clientId: 0oa3eontbbmV9Klmk4x7
-        clientSecret: J-aKNZW7s9K5KFd1e6-eCbt6g6dLei-Etsugzdz7
-        audience: https://dev-414194.okta.com
+        clientId: ${AUTH_OKTA_CLIENT_ID}
+        clientSecret: ${AUTH_OKTA_CLIENT_SECRET}
+        audience: ${AUTH_OKTA_AUDIENCE}
   #  oauth2:
   #    development:
   #      clientId: ${AUTH_OAUTH2_CLIENT_ID}
