@@ -1,13 +1,13 @@
 integrations:
   github:
     - host: github.com
-      token: '{contact devops@inpixon.com for credentials in Lastpass}'
+      token:
 
 auth:
   environment: development
   providers:
     okta:
       development:
-        clientId: '{contact devops@inpixon.com for credentials in Lastpass}'
-        clientSecret: '{contact devops@inpixon.com for credentials in Lastpass}'
-        audience: '{contact devops@inpixon.com for credentials in Lastpass}'
+        clientId:
+        clientSecret:
+        audience:
