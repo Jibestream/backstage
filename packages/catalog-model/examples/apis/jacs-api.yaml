@@ -10,4 +10,4 @@ spec:
   owner: inpixon
   
   definition: 
-    $text: https://api.jibestream.com/JACS/api/swagger.yaml
+    $text: https://mapping-dev-jacs.inpixondev.com/JACS/api/swagger.yaml

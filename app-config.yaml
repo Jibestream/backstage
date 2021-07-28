@@ -42,7 +42,7 @@ backend:
   reading:
     allow:
       - host: login.inpixon.com
-      - host: api.inpixondev.com
+      - host: mapping-dev-jacs.inpixondev.com
       - host: api.jibestream.com
       - host: schema.postman.com
       - host: example.com
