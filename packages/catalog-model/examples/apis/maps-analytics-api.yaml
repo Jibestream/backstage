@@ -1,7 +1,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: mapanalytics
+  name: mapanalyticsapi
+  description: Map Analytics Api
   
 
 spec: 

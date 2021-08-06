@@ -1,7 +1,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: odpanalytics
+  name: odpanalyticsapi
+  description: ODP Analytics API
   
 
 spec: 

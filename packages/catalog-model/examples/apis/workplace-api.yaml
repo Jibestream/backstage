@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
   name: wokplaceanalytics
-  description: IIP API
+  description: IAP API
 
 spec: 
   type: openapi
