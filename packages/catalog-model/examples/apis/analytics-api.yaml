@@ -1,7 +1,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: analytics
+  name: analyticsapi
+  description: Analytics API
   
 
 spec: 
