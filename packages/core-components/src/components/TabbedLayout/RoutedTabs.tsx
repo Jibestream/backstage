@@ -22,7 +22,11 @@ import { SubRoute } from './types';
 
 export function useSelectedSubRoute(
   subRoutes: SubRoute[],
-): { index: number; route: SubRoute; element: JSX.Element } {
+): {
+  index: number;
+  route: SubRoute;
+  element: JSX.Element;
+} {
   const params = useParams();
 
   const routes = subRoutes.map(({ path, children }) => ({

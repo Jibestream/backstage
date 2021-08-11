@@ -91,7 +91,10 @@ export class AwsOrganizationCloudAccountProcessor implements CatalogProcessor {
 
   extractInformationFromArn(
     arn: string,
-  ): { accountId: string; organizationId: string } {
+  ): {
+    accountId: string;
+    organizationId: string;
+  } {
     const parts = arn.split('/');
 
     return {

@@ -30,7 +30,10 @@ import {
 
 function parsePagination(
   input?: EntityPagination,
-): { limit?: number; offset?: number } {
+): {
+  limit?: number;
+  offset?: number;
+} {
   if (!input) {
     return {};
   }

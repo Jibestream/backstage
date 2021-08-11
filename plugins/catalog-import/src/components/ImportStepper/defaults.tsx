@@ -41,7 +41,10 @@ export type StepperProviderOpts = {
     disable?: boolean;
     preparePullRequest?: (
       apis: StepperApis,
-    ) => { title?: string; body?: string };
+    ) => {
+      title?: string;
+      body?: string;
+    };
   };
 };
 
