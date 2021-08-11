@@ -28,20 +28,19 @@ import {
 import { Entity } from '@backstage/catalog-model';
 import { DocsTable } from './DocsTable';
 import { DocsCardGrid } from './DocsCardGrid';
+import { TechDocsPageWrapper } from './TechDocsPageWrapper';
 
 import {
   CodeSnippet,
   Content,
-  Header,
   HeaderTabs,
-  Page,
   Progress,
   WarningPanel,
   SupportButton,
   ContentHeader,
 } from '@backstage/core-components';
 
-import { ConfigApi, configApiRef, useApi } from '@backstage/core-plugin-api';
+import { useApi } from '@backstage/core-plugin-api';
 
 const panels = {
   DocsTable: DocsTable,
@@ -122,7 +121,6 @@ export const TechDocsCustomHome = ({
 }) => {
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const catalogApi: CatalogApi = useApi(catalogApiRef);
-  const configApi: ConfigApi = useApi(configApiRef);
 
   const { value: entities, loading, error } = useAsync(async () => {
     const response = await catalogApi.getEntities({
@@ -143,27 +141,21 @@ export const TechDocsCustomHome = ({
     });
   });
 
-  const generatedSubtitle = `Documentation available in ${
-    configApi.getOptionalString('organization.name') ?? 'Backstage'
-  }`;
-
   const currentTabConfig = tabsConfig[selectedTab];
 
   if (loading) {
     return (
-      <Page themeId="documentation">
-        <Header title="Documentation" subtitle={generatedSubtitle} />
+      <TechDocsPageWrapper>
         <Content>
           <Progress />
         </Content>
-      </Page>
+      </TechDocsPageWrapper>
     );
   }
 
   if (error) {
     return (
-      <Page themeId="documentation">
-        <Header title="Documentation" subtitle={generatedSubtitle} />
+      <TechDocsPageWrapper>
         <Content>
           <WarningPanel
             severity="error"
@@ -172,13 +164,12 @@ export const TechDocsCustomHome = ({
             <CodeSnippet language="text" text={error.toString()} />
           </WarningPanel>
         </Content>
-      </Page>
+      </TechDocsPageWrapper>
     );
   }
 
   return (
-    <Page themeId="documentation">
-      <Header title="Documentation" subtitle={generatedSubtitle} />
+    <TechDocsPageWrapper>
       <HeaderTabs
         selectedIndex={selectedTab}
         onChange={index => setSelectedTab(index)}
@@ -197,6 +188,6 @@ export const TechDocsCustomHome = ({
           />
         ))}
       </Content>
-    </Page>
+    </TechDocsPageWrapper>
   );
 };

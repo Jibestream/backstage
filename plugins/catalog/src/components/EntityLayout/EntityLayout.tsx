@@ -35,6 +35,7 @@ import {
 import {
   EntityContext,
   EntityRefLinks,
+  FavoriteEntity,
   getEntityRelations,
   useEntityCompoundName,
 } from '@backstage/plugin-catalog-react';
@@ -43,7 +44,6 @@ import { Alert } from '@material-ui/lab';
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { EntityContextMenu } from '../EntityContextMenu/EntityContextMenu';
-import { FavouriteEntity } from '../FavouriteEntity/FavouriteEntity';
 import { UnregisterEntityDialog } from '../UnregisterEntityDialog/UnregisterEntityDialog';
 
 type SubRoute = {
@@ -79,7 +79,7 @@ const EntityLayoutTitle = ({
       >
         {title}
       </Box>
-      {entity && <FavouriteEntity entity={entity} />}
+      {entity && <FavoriteEntity entity={entity} />}
     </Box>
   );
 };
@@ -174,28 +174,31 @@ export const EntityLayout = ({
 }: EntityLayoutProps) => {
   const { kind, namespace, name } = useEntityCompoundName();
   const { entity, loading, error } = useContext(EntityContext);
+  const routes = useElementFilter(
+    children,
+    elements =>
+      elements
+        .selectByComponentData({
+          key: dataKey,
+          withStrictError:
+            'Child of EntityLayout must be an EntityLayout.Route',
+        })
+        .getElements<SubRoute>() // all nodes, element data, maintain structure or not?
+        .flatMap(({ props }) => {
+          if (props.if && entity && !props.if(entity)) {
+            return [];
+          }
 
-  const routes = useElementFilter(children, elements =>
-    elements
-      .selectByComponentData({
-        key: dataKey,
-        withStrictError: 'Child of EntityLayout must be an EntityLayout.Route',
-      })
-      .getElements<SubRoute>() // all nodes, element data, maintain structure or not?
-      .flatMap(({ props }) => {
-        if (props.if && entity && !props.if(entity)) {
-          return [];
-        }
-
-        return [
-          {
-            path: props.path,
-            title: props.title,
-            children: props.children,
-            tabProps: props.tabProps,
-          },
-        ];
-      }),
+          return [
+            {
+              path: props.path,
+              title: props.title,
+              children: props.children,
+              tabProps: props.tabProps,
+            },
+          ];
+        }),
+    [entity],
   );
 
   const { headerTitle, headerType } = headerProps(

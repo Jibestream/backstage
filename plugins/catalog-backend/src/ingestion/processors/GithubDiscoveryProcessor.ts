@@ -63,10 +63,18 @@ export class GithubDiscoveryProcessor implements CatalogProcessor {
         `There is no GitHub integration that matches ${location.target}. Please add a configuration entry for it under integrations.github`,
       );
     }
+
+    const { org, repoSearchPath, catalogPath, host } = parseUrl(
+      location.target,
+    );
+
+    // Building the org url here so that the github creds provider doesn't need to know
+    // about how to handle the wild card which is special for this processor.
+    const orgUrl = `https://${host}/${org}`;
+
     const { headers } = await GithubCredentialsProvider.create(
       gitHubConfig,
-    ).getCredentials({ url: location.target });
-    const { org, repoSearchPath, catalogPath } = parseUrl(location.target);
+    ).getCredentials({ url: orgUrl });
 
     const client = graphql.defaults({
       baseUrl: gitHubConfig.apiBaseUrl,
@@ -112,7 +120,12 @@ export class GithubDiscoveryProcessor implements CatalogProcessor {
 
 export function parseUrl(
   urlString: string,
-): { org: string; repoSearchPath: RegExp; catalogPath: string } {
+): {
+  org: string;
+  repoSearchPath: RegExp;
+  catalogPath: string;
+  host: string;
+} {
   const url = new URL(urlString);
   const path = url.pathname.substr(1).split('/');
 
@@ -122,6 +135,7 @@ export function parseUrl(
       org: decodeURIComponent(path[0]),
       repoSearchPath: escapeRegExp(decodeURIComponent(path[1])),
       catalogPath: `/${decodeURIComponent(path.slice(2).join('/'))}`,
+      host: url.host,
     };
   }
 
