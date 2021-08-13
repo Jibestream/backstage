@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Namespace }}-db
+spec:
+  ports:
+    - port: {{ .Values.db.containerPort }}
+      targetPort: {{ .Values.db.containerPort }}
+  selector:
+    app: backstage
+    component: db
+
+  type: {{ .Values.backend.serviceType }}

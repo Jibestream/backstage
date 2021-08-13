@@ -1,0 +1,14 @@
+{{- if .Values.postgres_data.persistence.enabled }} 
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgresd
+  labels:
+    {{- include "backstage.labels" . | nindent 4 }}
+spec: 
+  accessModes:
+    - {{ .Values.postgres_data.accessMode | quote }} 
+  resources:
+    requests:
+      storage: {{ .Values.postgres_data.size | quote }}
+{{- end }}

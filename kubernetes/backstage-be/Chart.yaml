@@ -1,0 +1,6 @@
+apiVersion: v2
+name: backstage
+description: A Helm chart for INPX Backstage backend app
+type: application
+version: 0.0.1
+appVersion: "1.16.0"

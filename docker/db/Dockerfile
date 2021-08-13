@@ -1,0 +1,11 @@
+FROM postgres:latest
+
+ARG pdb
+ARG puser
+ARG ppass
+
+ENV POSTGRES_DB=$pdb
+ENV POSTGRES_USER=$puser
+ENV POSTGRES_PASSWORD=$ppass
+
+EXPOSE 5432

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "backstage.fullname" . }}-backend
+
+  {{- if .Values.deployment.annotations }}
+  annotations: 
+    {{ toYaml .Values.deployment.annotations | nindent 4 }}
+  {{- end }}
+
+  labels:
+    {{- include "backstage.labels" . | nindent 4 }}
+
+spec:
+
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+
+  selector:
+    matchLabels:
+      app: backstage
+      component: backend
+
+  template:
+    metadata:
+      annotations:
+        ad.datadoghq.com/backstage.logs: '[{"source":"backstage","service":"backend"}]'
+      labels:
+        app: backstage
+        component: backend
+
+    spec:
+      imagePullSecrets:
+      - name: regcred
+
+      serviceAccountName: {{ include "backstage.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-backend
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.backend.containerPort }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+

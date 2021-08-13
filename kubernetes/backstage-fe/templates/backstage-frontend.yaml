@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "backstage.fullname" . }}-frontend
+
+  {{- if .Values.deployment.annotations }}
+  annotations: 
+    {{ toYaml .Values.deployment.annotations | nindent 4 }}
+  {{- end }}
+
+  labels:
+    {{- include "backstage.labels" . | nindent 4 }}
+
+spec:
+
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+
+  selector:
+    matchLabels:
+      app: backstage
+      component: frontend
+
+  template:
+    metadata:
+      labels:
+        app: backstage
+        component: frontend
+
+    spec:
+      imagePullSecrets:
+      - name: regcred
+
+      serviceAccountName: {{ include "backstage.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-frontend
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.frontend.containerPort }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

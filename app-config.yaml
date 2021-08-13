@@ -1,12 +1,8 @@
 app:
   title: Inpixon Developer Portal
-  baseUrl: http://localhost:3000
+  # baseUrl: http://localhost:3000
+  baseUrl: https://developer.inpixondev.com
   googleAnalyticsTrackingId: # UA-000000-0
-  #datadogRum:
-  #  clientToken: '123456789'
-  #  applicationId: qwerty
-  #   site: # datadoghq.eu default = datadoghq.com
-  #   env: # optional
 
   support:
     url: https://github.com/backstage/backstage/issues # Used by common ErrorPage
@@ -23,7 +19,8 @@ app:
             title: '#backstage'
 
 backend:
-  baseUrl: http://localhost:7000
+  # baseUrl: http://localhost:7000
+  baseUrl: https://developer.inpixondev.com
   listen:
     port: 7000
   database:
@@ -33,10 +30,9 @@ backend:
     client: pg
     connection:
       host: ${POSTGRES_HOST}
-      # port: ${POSTGRES_PORT}
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
-      database:  ${POSTGRES_DATABASE}
+      database:  ${POSTGRES_DB}
       # https://node-postgres.com/features/ssl
       #ssl: require # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
         #ca: # if you have a CA file and want to verify it you can uncomment this section
@@ -149,27 +145,6 @@ integrations:
   github:
     - host: github.com
       token: ${GITHUB_TOKEN}
-    ### Example for how to add your GitHub Enterprise instance using the API:
-    # - host: ghe.example.net
-    #   apiBaseUrl: https://ghe.example.net/api/v3
-    #   token: ${GHE_TOKEN}
-    ### Example for how to add your GitHub Enterprise instance using raw HTTP fetches (token is optional):
-    # - host: ghe.example.net
-    #   rawBaseUrl: https://ghe.example.net/raw
-    #   token: ${GHE_TOKEN}
-  # gitlab:
-  #   - host: gitlab.com
-  #     token: ${GITLAB_TOKEN}
-  # bitbucket:
-  #   - host: bitbucket.org
-  #     username: ${BITBUCKET_USERNAME}
-  #     appPassword: ${BITBUCKET_APP_PASSWORD}
-  # azure:
-  #   - host: dev.azure.com
-  #     token: ${AZURE_TOKEN}
-#  googleGcs:
-#    clientEmail: 'example@example.com'
-#    privateKey: ${GCS_PRIVATE_KEY}
 
 catalog:
   rules:
@@ -239,7 +214,7 @@ catalog:
     - type: url
       target: https://github.com/Jibestream/techdocs-mapping-cms/blob/master/catalog-info.yaml
       rules:
-        - allow: [Group]
+        - allow: [Group, Compoent]
     # Backstage example components
     - type: file
       target: ../catalog-model/examples/all-components.yaml
@@ -292,46 +267,6 @@ auth:
         clientId: ${AUTH_OKTA_CLIENT_ID}
         clientSecret: ${AUTH_OKTA_CLIENT_SECRET}
         audience: ${AUTH_OKTA_AUDIENCE}
-    oauth2:
-      development:
-        clientId: ${AUTH_OAUTH2_CLIENT_ID}
-        clientSecret: ${AUTH_OAUTH2_CLIENT_SECRET}
-        authorizationUrl: ${AUTH_OAUTH2_AUTH_URL}
-        tokenUrl: ${AUTH_OAUTH2_TOKEN_URL}
-        ###
-        # provide a list of scopes as needed for your OAuth2 Server:
-        #
-        # scope: saml-login-selector openid profile email
-    oidc:
-      # Note that you must define a session secret (see above) since the oidc provider requires session support.
-      # Note that by default, this provider will use the 'none' prompt which assumes that your are already logged on in the IDP.
-      # You should set prompt to:
-      # - auto: will let the IDP decide if you need to log on or if you can skip login when you have an active SSO session
-      # - login: will force the IDP to always present a login form to the user
-      development:
-        metadataUrl: ${AUTH_OIDC_METADATA_URL}
-        clientId: ${AUTH_OIDC_CLIENT_ID}
-        clientSecret: ${AUTH_OIDC_CLIENT_SECRET}
-        authorizationUrl: ${AUTH_OIDC_AUTH_URL}
-        tokenUrl: ${AUTH_OIDC_TOKEN_URL}
-        tokenSignedResponseAlg: ${AUTH_OIDC_TOKEN_SIGNED_RESPONSE_ALG} # default='RS256'
-        scope: ${AUTH_OIDC_SCOPE} # default='openid profile email'
-        prompt: ${AUTH_OIDC_PROMPT} # default=none (allowed values: auto, none, consent, login)
-    auth0:
-      development:
-        clientId: ${AUTH_AUTH0_CLIENT_ID}
-        clientSecret: ${AUTH_AUTH0_CLIENT_SECRET}
-        domain: ${AUTH_AUTH0_DOMAIN}
-    microsoft:
-      development:
-        clientId: ${AUTH_MICROSOFT_CLIENT_ID}
-        clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
-        tenantId: ${AUTH_MICROSOFT_TENANT_ID}
-    onelogin:
-      development:
-        clientId: ${AUTH_ONELOGIN_CLIENT_ID}
-        clientSecret: ${AUTH_ONELOGIN_CLIENT_SECRET}
-        issuer: ${AUTH_ONELOGIN_ISSUER}
 costInsights:
   engineerCost: 200000
   products:

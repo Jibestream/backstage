@@ -1,22 +1,25 @@
 version: '3'
 services:
-  webapp:
+  backstage-frontend:
     build:
       context: .
       dockerfile: Dockerfile
-    image: webapp
+    image: backstage-frontend
     container_name: backstage-frontend
     ports:
       - 3000:3000
     depends_on:
-      - db
-  db:
-    image: "postgres:latest"
-    container_name: backstage
-    environment:
-      - POSTGRES_DB=backstage
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - backstage-db
+  backstage-db:
+    build:
+      context: .
+      dockerfile: docker/db/Dockerfile
+      args:
+        - pdb=$POSTGRES_DB
+        - puser=$POSTGRES_USER
+        - ppass=$POSTGRES_PASSWORD
+    image: backstage-db
+    container_name: backstage-db
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     ports:
@@ -25,22 +28,21 @@ services:
     build:
       context: .
       dockerfile: packages/backend/Dockerfile
+      args:
+        - phost=backstage-db
+        - pdb=$POSTGRES_DB
+        - puser=$POSTGRES_USER
+        - ppass=$POSTGRES_PASSWORD
+        - gh_token=$GITHUB_TOKEN
+        - auth_okta_cid=$AUTH_OKTA_CLIENT_ID
+        - auth_okta_cs=$AUTH_OKTA_CLIENT_SECRET
+        - auth_okta_au=$AUTH_OKTA_AUDIENCE
+        - auth_gh_cid=$AUTH_GITHUB_CLIENT_ID
+        - auth_gh_cs=$AUTH_GITHUB_CLIENT_SECRET
     image: backstage-backend
     container_name: backstage-backend
-    environment:
-      - POSTGRES_HOST=db
-      # - DB_SERVER=db
-      - POSTGRES_DB=backstage
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - GITHUB_TOKEN=${GITHUB_TOKEN} 
-      - AUTH_OKTA_CLIENT_ID=${AUTH_OKTA_CLIENT_ID}
-      - AUTH_OKTA_CLIENT_SECRET=${AUTH_OKTA_CLIENT_SECRET}
-      - AUTH_OKTA_AUDIENCE=${AUTH_OKTA_AUDIENCE}
-      - AUTH_GITHUB_CLIENT_ID=${AUTH_GITHUB_CLIENT_ID}
-      - AUTH_GITHUB_CLIENT_SECRET=${AUTH_GITHUB_CLIENT_SECRET}
     depends_on:
-      - db
+      - backstage-db
     ports:
       - '7000:7000'
 volumes:

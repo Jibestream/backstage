@@ -1,3 +1,4 @@
+dist: bionic
 language: node_js
 node_js:
 - "14"
@@ -6,41 +7,34 @@ branches:
   only:
   - master
   - development
+  - DP-22
 
-jobs:
-  include:
-    - name: 'Backstage Build'
-    - language: node_js
-    - node_js: 14
+services:
+  - docker
 
 before_script:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - if [ $TRAVIS_BRANCH == 'master' ]; then
-    export ENVIRONMENT='production';
+  - |
+    if [ $TRAVIS_BRANCH == 'master' ]; then
+      export ENVIRONMENT='production';
+    elif [ $TRAVIS_BRANCH == 'development' ]; then
+      export ENVIRONMENT='development';
     fi
-  - if [ $TRAVIS_BRANCH == 'development' ]; then
-    export ENVIRONMENT='development';
-    fi
-  - if [ -z $ENVIRONMENT ]; then
-    export ENVIRONMENT='development';
-  # - git config --global user.email "developer@jibestream.com"
-  # - git config --global user.name "jibestreamdev"
-  # - git remote set-url origin https://${GH_TOKEN}@github.com/Jibestream/backstage.git
-  # - git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
+    git config --global user.email "developer@jibestream.com"
+    git config --global user.name "jibestreamdev"
+    git remote set-url origin https://${GH_TOKEN}@github.com/Jibestream/backstage.git
+    git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
 
-# script:
-#   - cd $TRAVIS_BUILD_DIR/
-#   # - export VERSION=`node -p "require('./package.json').version"`
-#   # - if [ $ENVIRONMENT == 'development' ]; then
-#   #     export VERSION=$VERSION.$TRAVIS_BUILD_NUMBER;
-#   #   fi
-#   # - echo "Going to stamp $VERSION on this build..."
-#   - docker login inpixon.jfrog.io -u $JFROG_USERNAME -p $JFROG_PASSWORD
-#   - COMPOSE_PROJECT_NAME=backstage docker-compose build
-#   - docker tag webapp:latest inpixon.jfrog.io/backstage/frontend:latest
-#   - docker tag backstage-backend:latest inpixon.jfrog.io/backstage/backend:latest
-#   - docker push inpixon.jfrog.io/backstage/frontend:latest
-#   - docker push inpixon.jfrog.io/backstage/backend:latest
+script:
+  - cd $TRAVIS_BUILD_DIR/
+  - yarn pre-build
+  - docker login quay.io -u $DOCKER_UNAME -p $DOCKER_PWD
+  - COMPOSE_PROJECT_NAME=backstage docker-compose build
+  - docker tag backstage-frontend:latest quay.io/inpixon/backstage-frontend
+  - docker tag backstage-backend:latest quay.io/inpixon/backstage-backend:app
+  - docker tag backstage-db:latest quay.io/inpixon/backstage-backend:db
+  - docker push quay.io/inpixon/backstage-frontend
+  - docker push quay.io/inpixon/backstage-backend:app
+  - docker push quay.io/inpixon/backstage-backend:db
 #   - cd $TRAVIS_BUILD_DIR/
 #   # - git fetch --tags
 #   # - git checkout development

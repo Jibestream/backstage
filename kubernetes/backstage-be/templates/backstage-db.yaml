@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "backstage.fullname" . }}-db
+
+  {{- if .Values.deployment.annotations }}
+  annotations: 
+    {{ toYaml .Values.deployment.annotations | nindent 4 }}
+  {{- end }}
+
+  labels:
+    {{- include "backstage.labels" . | nindent 4 }}
+
+spec:
+
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+
+  selector:
+    matchLabels:
+      app: backstage
+      component: db
+
+  template:
+    metadata:
+      annotations:
+        ad.datadoghq.com/backstage.logs: '[{"source":"backstage","service":"backend"}]'
+      labels:
+        app: backstage
+        component: db
+
+    spec:
+      imagePullSecrets:
+      - name: regcred
+
+      serviceAccountName: {{ include "backstage.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-db
+          image: "{{ .Values.db.image }}:{{ .Values.db.tag }}"
+          imagePullPolicy: {{ .Values.db.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.db.containerPort }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data/
+              name: postgresd
+              subPath: postgres
+      volumes:
+        - name: postgresd
+          persistentVolumeClaim:
+            claimName: postgresd
