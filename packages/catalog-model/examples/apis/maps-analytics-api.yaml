@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: mapanalyticsapi
+  description: Map Analytics Api
+  
+
+spec: 
+  type: openapi
+  lifecycle: production
+  owner: inpixon
+  definition: 
+    $text: https://api.inpixondev.com//maps/query/openapi.json

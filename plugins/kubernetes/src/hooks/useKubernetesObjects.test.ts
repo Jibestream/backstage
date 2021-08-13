@@ -158,7 +158,9 @@ describe('useKubernetesObjects', () => {
     (useApi as any).mockReturnValue({
       getClusters: mockGetClusters.mockResolvedValue(getClustersResponse),
       decorateRequestBodyForAuth: mockDecorateRequestBodyForAuth.mockRejectedValue(
-        { message: 'some-error' },
+        {
+          message: 'some-error',
+        },
       ),
       getObjectsByEntity: mockGetObjectsByEntity,
     });

@@ -28,7 +28,10 @@ import { LOCATION_ANNOTATION, SOURCE_LOCATION_ANNOTATION } from './annotation';
  */
 export function parseLocationReference(
   ref: string,
-): { type: string; target: string } {
+): {
+  type: string;
+  target: string;
+} {
   if (typeof ref !== 'string') {
     throw new TypeError(
       `Unable to parse location reference '${ref}', unexpected argument ${typeof ref}`,
@@ -93,7 +96,10 @@ export function stringifyLocationReference(ref: {
  */
 export function getEntitySourceLocation(
   entity: Entity,
-): { type: string; target: string } {
+): {
+  type: string;
+  target: string;
+} {
   const locationRef =
     entity.metadata?.annotations?.[SOURCE_LOCATION_ANNOTATION] ??
     entity.metadata?.annotations?.[LOCATION_ANNOTATION];

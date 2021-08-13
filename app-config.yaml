@@ -49,6 +49,11 @@ backend:
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   reading:
     allow:
+      - host: mapping-dev-jacs.inpixondev.com
+      - host: api.jibestream.com
+      - host: api.inpixondev.com
+      - host: login.inpixon.com
+      - host: schema.postman.com
       - host: example.com
       - host: '*.mozilla.org'
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
@@ -248,6 +253,8 @@ scaffolder:
   # defaultAuthor:
   #   name: Scaffolder
   #   email: scaffolder@backstage.io
+  # Use to customize the default commit message when new components are created
+  # defaultCommitMessage: 'Initial commit'
   github:
     token: ${GITHUB_TOKEN}
     visibility: public # or 'internal' or 'private'

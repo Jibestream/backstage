@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: inpixonmappingsdk
+  description: JACS API
+  
+
+spec: 
+  type: openapi
+  lifecycle: production
+  owner: inpixon
+  definition: 
+    $text: https://mapping-dev-jacs.inpixondev.com/JACS/api/swagger.yaml

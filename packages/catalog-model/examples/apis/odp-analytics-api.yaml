@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: odpanalyticsapi
+  description: ODP Analytics API
+  
+
+spec: 
+  type: openapi
+  lifecycle: production
+  owner: inpixon
+  definition: 
+    $text: https://api.inpixondev.com/odp/query/openapi.json
