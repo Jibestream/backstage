@@ -69,7 +69,7 @@ import { Root } from './components/Root';
 import { entityPage } from './components/catalog/EntityPage';
 import { searchPage } from './components/search/SearchPage';
 import { LowerCaseValuePickerFieldExtension } from './components/scaffolder/customScaffolderExtensions';
-import { providers } from './identityProviders';
+// import { providers } from './identityProviders';
 import * as plugins from './plugins';
 
 const oktaProvider: SignInProviderConfig = {
