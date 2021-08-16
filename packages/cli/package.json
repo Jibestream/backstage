@@ -52,7 +52,7 @@
     "@svgr/webpack": "5.5.x",
     "@types/webpack-env": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^v4.28.3",
-    "@typescript-eslint/parser": "^v4.28.3",
+    "@typescript-eslint/parser": "^v4.29.1",
     "@yarnpkg/lockfile": "^1.1.0",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "bfj": "^7.0.2",
