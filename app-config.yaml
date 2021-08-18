@@ -1,7 +1,8 @@
 app:
   title: Inpixon Developer Portal
-  baseUrl: http://localhost:3000
-  # baseUrl: https://developer.inpixondev.com
+  # For local development, use the following:
+  # baseUrl: http://localhost:3000
+  baseUrl: ${BASE_URL}
   googleAnalyticsTrackingId: # UA-000000-0
 
   support:
@@ -19,20 +20,21 @@ app:
             title: '#backstage'
 
 backend:
-  baseUrl: http://localhost:7000
-  # baseUrl: https://developer.inpixondev.com
+  # For local development, use the following:
+  # baseUrl: http://localhost:7000
+  baseUrl: ${BASE_URL}
   listen:
     port: 7000
   database:
-    client: sqlite3
-    connection: ':memory:'
+    # client: sqlite3
+    # connection: ':memory:'
     # config options: https://node-postgres.com/api/client
-    # client: pg
-    # connection:
-    #   host: ${POSTGRES_HOST}
-    #   user: ${POSTGRES_USER}
-    #   password: ${POSTGRES_PASSWORD}
-    #   database:  ${POSTGRES_DB}
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      database:  ${POSTGRES_DB}
       # https://node-postgres.com/features/ssl
       #ssl: require # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
         #ca: # if you have a CA file and want to verify it you can uncomment this section
@@ -107,7 +109,7 @@ proxy:
       Authorization: ${ILERT_AUTH_HEADER}
 
 organization:
-  name: My Company
+  name: Inpixon
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
@@ -116,7 +118,7 @@ organization:
 techdocs:
   builder: 'local' # Alternatives - 'external'
   generator:
-    runIn: 'docker'
+    runIn: 'local'
     # dockerImage: my-org/techdocs # use a custom docker image
     # pullImage: true # or false to disable automatic pulling of image (e.g. if custom docker login is required)
   publisher:
@@ -174,33 +176,6 @@ catalog:
         # - target: https://ghe.example.net
         #   apiBaseUrl: https://ghe.example.net/api
         #   token: ${GHE_TOKEN}
-    ldapOrg:
-      ### Example for how to add your enterprise LDAP server
-      # providers:
-      #   - target: ldaps://ds.example.net
-      #     bind:
-      #       dn: uid=ldap-reader-user,ou=people,ou=example,dc=example,dc=net
-      #       secret: ${LDAP_SECRET}
-      #     users:
-      #       dn: ou=people,ou=example,dc=example,dc=net
-      #       options:
-      #         filter: (uid=*)
-      #       map:
-      #         description: l
-      #     groups:
-      #       dn: ou=access,ou=groups,ou=example,dc=example,dc=net
-      #       options:
-      #         filter: (&(objectClass=some-group-class)(!(groupType=email)))
-    microsoftGraphOrg:
-      ### Example for how to add your Microsoft Graph tenant
-      #providers:
-      #  - target: https://graph.microsoft.com/v1.0
-      #    authority: https://login.microsoftonline.com
-      #    tenantId: ${MICROSOFT_GRAPH_TENANT_ID}
-      #    clientId: ${MICROSOFT_GRAPH_CLIENT_ID}
-      #    clientSecret: ${MICROSOFT_GRAPH_CLIENT_SECRET_TOKEN}
-      #    userFilter: accountEnabled eq true and userType eq 'member'
-      #    groupFilter: securityEnabled eq false and mailEnabled eq true and groupTypes/any(c:c+eq+'Unified')
 
   locations:
     # Add a location here to ingest it, for example from a URL:
@@ -223,7 +198,7 @@ catalog:
         - allow: [Group, Compoent]
     # Backstage example components
     - type: file
-      target: ../catalog-model/examples/all-components.yaml
+      target: /app/catalog-model/examples/all-components.yaml
     # Example component for github-actions and TechDocs
     - type: file
       target: ../../plugins/github-actions/examples/sample.yaml
@@ -232,22 +207,22 @@ catalog:
       target: ../../plugins/techdocs-backend/examples/documented-component/catalog-info.yaml
     # Backstage example APIs
     - type: file
-      target: ../catalog-model/examples/all-apis.yaml
+      target: /app/catalog-model/examples/all-apis.yaml
     # Backstage example resources
     - type: file
-      target: ../catalog-model/examples/all-resources.yaml
+      target: /app/catalog-model/examples/all-resources.yaml
     # Backstage example systems
     - type: file
-      target: ../catalog-model/examples/all-systems.yaml
+      target: /app/catalog-model/examples/all-systems.yaml
     # Backstage example domains
     - type: file
-      target: ../catalog-model/examples/all-domains.yaml
+      target: /app/catalog-model/examples/all-domains.yaml
     # Backstage example templates
     - type: file
       target: ../../plugins/scaffolder-backend/sample-templates/all-templates.yaml
     # Backstage example groups and users
     - type: file
-      target: ../catalog-model/examples/acme-corp.yaml
+      target: /app/catalog-model/examples/acme-corp.yaml
 
 scaffolder:
   # Use to customize default commit author info used when new components are created

@@ -8,7 +8,6 @@
 # yarn build
 #
 # Once the commands have been run, you can build the image using `yarn build-image`
-
 FROM node:14-buster-slim
 
 WORKDIR /app
@@ -34,6 +33,9 @@ ENV AUTH_OKTA_CLIENT_SECRET=$auth_okta_cs
 ENV AUTH_OKTA_AUDIENCE=$auth_okta_au
 ENV AUTH_GITHUB_CLIENT_ID=$auth_gh_cid
 ENV AUTH_GITHUB_CLIENT_SECRET=$auth_gh_cs
+
+RUN apt update && apt install -y mkdocs && apt -y install python3-pip
+RUN pip3 install mkdocs-techdocs-core
 
 # Copy repo skeleton first, to avoid unnecessary docker cache invalidation.
 # The skeleton contains the package.json of each package in the monorepo,

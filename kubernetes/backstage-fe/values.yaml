@@ -50,6 +50,14 @@ frontend:
   serviceType: LoadBalancer
   imagePullPolicy: Always
 
+ingress:
+  name: developer.inpixondev
+  host: developer.inpixondev.com
+  backend:
+    containerPort: 7000
+  frontend:
+    containerPort: 3000
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little

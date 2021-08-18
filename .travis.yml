@@ -13,28 +13,38 @@ services:
   - docker
 
 before_script:
-  - |
-    if [ $TRAVIS_BRANCH == 'master' ]; then
+  - if [ $TRAVIS_BRANCH == 'master' ]; then
       export ENVIRONMENT='production';
     elif [ $TRAVIS_BRANCH == 'development' ]; then
       export ENVIRONMENT='development';
     fi
-    git config --global user.email "developer@jibestream.com"
-    git config --global user.name "jibestreamdev"
-    git remote set-url origin https://${GH_TOKEN}@github.com/Jibestream/backstage.git
-    git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
+  - git config --global user.email "developer@jibestream.com"
+  - git config --global user.name "jibestreamdev"
+  - git remote set-url origin https://${GH_TOKEN}@github.com/Jibestream/backstage.git
+  - git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
 
 script:
   - cd $TRAVIS_BUILD_DIR/
   - yarn pre-build
   - docker login quay.io -u $DOCKER_UNAME -p $DOCKER_PWD
   - COMPOSE_PROJECT_NAME=backstage docker-compose build
-  - docker tag backstage-frontend:latest quay.io/inpixon/backstage-frontend
-  - docker tag backstage-backend:latest quay.io/inpixon/backstage-backend:app
-  - docker tag backstage-db:latest quay.io/inpixon/backstage-backend:db
-  - docker push quay.io/inpixon/backstage-frontend
-  - docker push quay.io/inpixon/backstage-backend:app
-  - docker push quay.io/inpixon/backstage-backend:db
+  - export VERSION=`node -p "require('./package.json').version"`
+  - if [ $ENVIRONMENT == 'development' ]; then
+      export VERSION=$VERSION.$TRAVIS_BUILD_NUMBER;
+    fi
+  - docker tag backstage-frontend:latest quay.io/inpixon/backstage-frontend-$ENVIRONMENT:latest
+  - docker tag backstage-frontend:latest quay.io/inpixon/backstage-frontend-$ENVIRONMENT:$VERSION
+  - docker tag backstage-backend:latest quay.io/inpixon/backstage-backend-express-$ENVIRONMENT:app-latest
+  - docker tag backstage-backend:latest quay.io/inpixon/backstage-backend-express-$ENVIRONMENT:app-$VERSION
+  - docker tag backstage-db:latest quay.io/inpixon/backstage-backend-express-$ENVIRONMENT:db-latest
+  - docker tag backstage-db:latest quay.io/inpixon/backstage-backend-express-$ENVIRONMENT:db-$VERSION
+  - docker push quay.io/inpixon/backstage-frontend-$ENVIRONMENT:latest
+  - docker push quay.io/inpixon/backstage-frontend-$ENVIRONMENT:$VERSION
+  - docker push quay.io/inpixon/backstage-backend-express-$ENVIRONMENT:app-latest
+  - docker push quay.io/inpixon/backstage-backend-express-$ENVIRONMENT:app-$VERSION
+  - docker push quay.io/inpixon/backstage-backend-express-$ENVIRONMENT:db-latest
+  - docker push quay.io/inpixon/backstage-backend-express-$ENVIRONMENT:db-$VERSION
+
 #   - cd $TRAVIS_BUILD_DIR/
 #   # - git fetch --tags
 #   # - git checkout development
